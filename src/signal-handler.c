@@ -114,7 +114,7 @@ int signal_handler_process(signal_handler *const handler, timer *const timer) {
     for (unsigned short i = 0; i < handler->block_count; ++i) {
         block *const block = &handler->blocks[i];
         if (block->signal == signal - SIGRTMIN) {
-            const uint8_t button = (uint8_t)info.ssi_int;
+            const uint16_t button = (uint16_t)info.ssi_int;
             block_execute(block, button);
             break;
         }

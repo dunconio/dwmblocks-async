@@ -23,7 +23,7 @@ block block_new(const char *const icon, const char *const command,
                 const unsigned int interval, const int signal);
 int block_init(block *const block);
 int block_deinit(block *const block);
-int block_execute(block *const block, const uint8_t button);
+int block_execute(block *const block, const uint16_t button);
 int block_update(block *const block);
 
 #endif  // BLOCK_H

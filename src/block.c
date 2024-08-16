@@ -51,7 +51,7 @@ int block_deinit(block *const block) {
     return 0;
 }
 
-int block_execute(block *const block, const uint8_t button) {
+int block_execute(block *const block, const uint16_t button) {
     // Ensure only one child process exists per block at an instance.
     if (block->fork_pid != -1) {
         return 0;
@@ -70,8 +70,20 @@ int block_execute(block *const block, const uint8_t button) {
         int status = close(block->pipe[READ_END]);
 
         if (button != 0) {
+			unsigned int modifier = (button & 0x7f00U) >> 8;
+			unsigned int button_ = (button & 0xffU);
             char button_str[4];
-            (void)snprintf(button_str, LEN(button_str), "%hhu", button);
+			button_str[1] = '\0';
+			button_str[0] = modifier & 0x1 ? '1' : '0'; status |= setenv("BLOCK_SHIFT", button_str, 1);
+			button_str[0] = modifier & 0x2 ? '1' : '0'; status |= setenv("BLOCK_CONTROL", button_str, 1);
+			button_str[0] = modifier & 0x4 ? '1' : '0'; status |= setenv("BLOCK_MOD1", button_str, 1);
+			button_str[0] = modifier & 0x8 ? '1' : '0'; status |= setenv("BLOCK_MOD2", button_str, 1);
+			button_str[0] = modifier & 0x10 ? '1' : '0'; status |= setenv("BLOCK_MOD3", button_str, 1);
+			button_str[0] = modifier & 0x20 ? '1' : '0'; status |= setenv("BLOCK_MOD4", button_str, 1);
+			button_str[0] = modifier & 0x40 ? '1' : '0'; status |= setenv("BLOCK_MOD5", button_str, 1);
+            (void)snprintf(button_str, LEN(button_str), "%02x", (uint8_t)modifier);
+			status |= setenv("BLOCK_MODIFIERS", button_str, 1);
+            (void)snprintf(button_str, LEN(button_str), "%hhu", button_);
             status |= setenv("BLOCK_BUTTON", button_str, 1);
         }
 

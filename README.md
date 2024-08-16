@@ -147,6 +147,18 @@ scripts in response to click events. You can check out
 [my status bar scripts](https://github.com/UtkarshVerma/dotfiles/tree/main/.local/bin/statusbar)
 as references for using the `$BLOCK_BUTTON` variable.
 
+Signals from `dwm` can contain modifier data in bits 8-15, and these will be translated to environment variables:<br />
+```c
+$BLOCK_MODIFIERS
+$BLOCK_SHIFT
+$BLOCK_CONTROL
+$BLOCK_MOD1
+$BLOCK_MOD2
+$BLOCK_MOD3
+$BLOCK_MOD4
+$BLOCK_MOD5
+```
+
 To use this feature, define the `CLICKABLE_BLOCKS` feature macro in your
 `config.h`:
 
